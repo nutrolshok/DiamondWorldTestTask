@@ -1,0 +1,9 @@
+name: ${project.artifactId}
+version: ${project.version}
+main: net.nutrolshok.diamondworldtesttask.Main
+authors: [nutrolshok]
+description: ${project.description}
+website: ${project.url}
+
+depend: [ProtocolLib]
+api-version: 1.13
