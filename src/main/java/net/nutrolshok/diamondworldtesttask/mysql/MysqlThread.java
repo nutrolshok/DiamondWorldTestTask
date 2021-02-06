@@ -112,8 +112,8 @@ public abstract class MysqlThread extends Thread {
     private void executeQueries() {
         while(!this.queries.isEmpty()) {
             final Query query = this.queries.poll();
-            final String q = this.onPreQuery(query.query);
 
+            final String q = this.onPreQuery(query.query);
             if (q == null) continue;
 
             try {
@@ -221,7 +221,8 @@ public abstract class MysqlThread extends Thread {
 
         Supplier<String> url, user, pass;
 
-        public MysqlConfigSupplier(Supplier<String> url, Supplier<String> user, Supplier<String> pass) {
+        public MysqlConfigSupplier(@NotNull final Supplier<String> url, @NotNull final Supplier<String> user,
+                                   @NotNull final Supplier<String> pass) {
             this.url = url;
             this.user = user;
             this.pass = pass;

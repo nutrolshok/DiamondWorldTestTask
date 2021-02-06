@@ -26,14 +26,16 @@ import java.util.Optional;
 @Getter
 public final class Main extends JavaPlugin {
 
-    static Main instance;
+    @Getter static Main instance;
     MySQLWorker mySQLWorker;
 
     @Override
     public void onEnable() {
         instance = this;
 
-        loadConfig();
+        final File configFile = new File(getDataFolder(), "config.yml");
+        if(!configFile.exists()) saveDefaultConfig();
+        reloadConfig();
 
         this.mySQLWorker = new MySQLWorker(Objects.requireNonNull(getConfig().getConfigurationSection("mysql")));
 
@@ -49,19 +51,9 @@ public final class Main extends JavaPlugin {
         this.mySQLWorker.finish();
     }
 
-    public static Main getInstance() {
-        return instance;
-    }
-
-    private void loadConfig() {
-        File configFile = new File(getDataFolder(), "config.yml");
-        if(!configFile.exists()) saveDefaultConfig();
-        reloadConfig();
-    }
-
     private void registerProtocolLibEvent() {
         ProtocolLibrary.getProtocolManager().addPacketListener(new PacketAdapter(
-                Main.getInstance(),
+                this,
                 ListenerPriority.NORMAL,
                 PacketType.Play.Server.ENTITY_METADATA) {
             @Override
@@ -82,9 +74,7 @@ public final class Main extends JavaPlugin {
                     final List<WrappedWatchableObject> list = event.getPacket().getWatchableCollectionModifier().read(0);
                     list.get(2).setValue(Optional.of(new ChatComponentText(event.getPlayer().getName())));
                     list.get(3).setValue(true);
-                } catch (Exception exception) {
-                    exception.printStackTrace();
-                }
+                } catch (final Exception ignored) {}
             }
         });
     }

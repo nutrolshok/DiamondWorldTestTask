@@ -12,12 +12,12 @@ public class MySQLWorker extends MysqlThread {
                 () -> section.getString("username"),
                 () -> section.getString("password")));
         this.useUnicode();
-        createTables();
+        createTable();
 
         start();
     }
 
-    private void createTables() {
+    private void createTable() {
         this.query("CREATE TABLE IF NOT EXISTS `ocelots` (" +
                 "id int(64) NOT NULL AUTO_INCREMENT PRIMARY KEY," +
                 "player_name varchar(50) NOT NULL," +
